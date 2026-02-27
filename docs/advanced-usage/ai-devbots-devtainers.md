@@ -89,6 +89,33 @@ If you need git, npm, and Android/cloud build tooling in self-hosted containers:
 - isolate heavy toolchains from user-facing API containers,
 - pass data between containers over internal network + queue/object storage.
 
+## Dashboard Tools
+
+### Artifact Gallery
+
+The Artifact Gallery (`contrib/artifact-gallery/`) is a self-hosted dashboard tool for bulk uploading, previewing, and managing multi-format files across your DevBot/DevTainer containers.
+
+**Supported formats**: docs, images, scripts, snippets, configs, WASM binaries
+
+**Features**:
+- Bulk drag-and-drop upload
+- Live preview for all supported formats (Markdown rendered, code syntax-highlighted, images thumbnailed)
+- Artifact gallery with grid/list view, search, filter, sort
+- Toolbar-accessible from the DevBots dashboard
+
+**Deploy as a Dokku app**:
+```bash
+dokku apps:create artifact-gallery
+dokku domains:add artifact-gallery gallery.yourdomain.com
+cd contrib/artifact-gallery
+git init && git add . && git commit -m "initial"
+git remote add dokku dokku@your-server:artifact-gallery
+git push dokku master
+```
+
+**Or reference dependencies from your forks**:
+The `package.json` uses GitHub fork references like `"xml2js": "krisshattanicole/node-xml2js#master"` — no npm registry needed for your customized packages.
+
 ## Operational Notes
 
 - Prefer least-privilege deploy users/keys per repository.

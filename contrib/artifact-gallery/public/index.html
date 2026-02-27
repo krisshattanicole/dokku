@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevBots Artifact Gallery</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Toolbar -->
+  <nav class="toolbar" role="navigation" aria-label="Main navigation">
+    <div class="toolbar-brand">
+      <span class="toolbar-icon">🗂️</span>
+      <span class="toolbar-title">DevBots Artifact Gallery</span>
+    </div>
+    <ul class="toolbar-nav">
+      <li><a href="#home" class="nav-link active" data-view="home">🏠 Home</a></li>
+      <li><a href="#gallery" class="nav-link" data-view="gallery">🖼️ Gallery</a></li>
+      <li><a href="#upload" class="nav-link" data-view="upload">⬆️ Upload</a></li>
+      <li><a href="#settings" class="nav-link" data-view="settings">⚙️ Settings</a></li>
+      <!-- Placeholders for future DevBot tools -->
+      <li class="nav-separator"></li>
+      <li><a href="#" class="nav-link nav-placeholder" title="Coming soon">🔄 n8n</a></li>
+      <li><a href="#" class="nav-link nav-placeholder" title="Coming soon">🔐 Secrets</a></li>
+      <li><a href="#" class="nav-link nav-placeholder" title="Coming soon">📦 Containers</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <main class="main-content">
+
+    <!-- Home View -->
+    <section id="view-home" class="view active">
+      <div class="hero">
+        <h1>DevBots Artifact Gallery</h1>
+        <p class="hero-sub">Bulk upload, preview, and manage multi-format files across your DevBot/DevTainer containers.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-goto="upload">⬆️ Upload Files</button>
+          <button class="btn btn-secondary" data-goto="gallery">🖼️ View Gallery</button>
+        </div>
+      </div>
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-label">Total Artifacts</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-size">—</div>
+          <div class="stat-label">Total Size</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-types">—</div>
+          <div class="stat-label">File Types</div>
+        </div>
+      </div>
+      <div class="supported-formats">
+        <h2>Supported Formats</h2>
+        <div class="format-tags">
+          <span class="tag tag-doc">.md</span><span class="tag tag-doc">.html</span>
+          <span class="tag tag-code">.js</span><span class="tag tag-code">.ts</span>
+          <span class="tag tag-code">.py</span><span class="tag tag-code">.sh</span>
+          <span class="tag tag-data">.json</span><span class="tag tag-data">.yaml</span>
+          <span class="tag tag-data">.yml</span><span class="tag tag-data">.xml</span>
+          <span class="tag tag-code">.css</span><span class="tag tag-code">.scss</span>
+          <span class="tag tag-image">.png</span><span class="tag tag-image">.jpg</span>
+          <span class="tag tag-image">.jpeg</span><span class="tag tag-image">.gif</span>
+          <span class="tag tag-image">.svg</span><span class="tag tag-image">.webp</span>
+          <span class="tag tag-binary">.wasm</span><span class="tag tag-doc">.txt</span>
+          <span class="tag tag-data">.csv</span><span class="tag tag-code">.toml</span>
+          <span class="tag tag-code">.dockerfile</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery View -->
+    <section id="view-gallery" class="view">
+      <div class="view-header">
+        <h2>Artifact Gallery</h2>
+        <div class="gallery-controls">
+          <input type="text" id="search-input" class="search-input" placeholder="🔍 Search by name, type…" />
+          <select id="filter-type" class="select-input">
+            <option value="">All types</option>
+            <option value="doc">Docs</option>
+            <option value="code">Code</option>
+            <option value="data">Data</option>
+            <option value="image">Images</option>
+            <option value="binary">Binary</option>
+          </select>
+          <select id="sort-by" class="select-input">
+            <option value="date-desc">Newest first</option>
+            <option value="date-asc">Oldest first</option>
+            <option value="name-asc">Name A–Z</option>
+            <option value="name-desc">Name Z–A</option>
+            <option value="size-desc">Largest first</option>
+            <option value="size-asc">Smallest first</option>
+          </select>
+          <div class="view-toggle">
+            <button id="view-grid" class="btn btn-icon active" title="Grid view">⊞</button>
+            <button id="view-list" class="btn btn-icon" title="List view">≡</button>
+          </div>
+        </div>
+      </div>
+      <div class="bulk-actions" id="bulk-actions" style="display:none">
+        <span id="selected-count">0 selected</span>
+        <button id="bulk-delete-btn" class="btn btn-danger">🗑️ Delete Selected</button>
+        <button id="deselect-all-btn" class="btn btn-secondary">✕ Deselect All</button>
+      </div>
+      <div id="gallery-grid" class="gallery-grid"></div>
+      <div id="gallery-empty" class="empty-state" style="display:none">
+        <span class="empty-icon">📂</span>
+        <p>No artifacts found. <a href="#upload" data-goto="upload">Upload some files</a> to get started.</p>
+      </div>
+    </section>
+
+    <!-- Upload View -->
+    <section id="view-upload" class="view">
+      <div class="view-header">
+        <h2>Upload Artifacts</h2>
+      </div>
+      <div id="drop-zone" class="drop-zone" role="region" aria-label="File drop zone">
+        <div class="drop-zone-inner">
+          <span class="drop-icon">📤</span>
+          <p class="drop-text">Drag &amp; drop files here</p>
+          <p class="drop-sub">or</p>
+          <label class="btn btn-primary" for="file-picker">Choose Files</label>
+          <input type="file" id="file-picker" multiple
+            accept=".md,.html,.js,.ts,.py,.sh,.json,.yaml,.yml,.xml,.css,.scss,.png,.jpg,.jpeg,.gif,.svg,.webp,.wasm,.txt,.csv,.dockerfile,.toml"
+            style="display:none" />
+          <p class="drop-hint">Supports 20+ formats · Max 50 MB per file</p>
+        </div>
+      </div>
+      <div id="upload-queue" class="upload-queue" style="display:none">
+        <h3>Upload Queue</h3>
+        <div id="upload-queue-list"></div>
+        <div class="upload-actions">
+          <button id="upload-start-btn" class="btn btn-primary">⬆️ Upload All</button>
+          <button id="upload-clear-btn" class="btn btn-secondary">✕ Clear Queue</button>
+        </div>
+      </div>
+      <div id="upload-results" class="upload-results" style="display:none">
+        <h3>Upload Results</h3>
+        <div id="upload-results-list"></div>
+        <button id="upload-go-gallery" class="btn btn-primary">🖼️ View in Gallery</button>
+      </div>
+    </section>
+
+    <!-- Settings View -->
+    <section id="view-settings" class="view">
+      <div class="view-header">
+        <h2>Settings</h2>
+      </div>
+      <div class="settings-panel">
+        <div class="settings-group">
+          <h3>About</h3>
+          <p>DevBots Artifact Gallery · Dokku-deployable self-hosted dashboard</p>
+          <p class="text-muted">Configure via environment variables: <code>PORT</code>, <code>UPLOAD_MAX_SIZE</code>, <code>GALLERY_TITLE</code>, <code>STORAGE_PATH</code></p>
+        </div>
+        <div class="settings-group">
+          <h3>Storage</h3>
+          <p>Artifacts are stored on disk in the configured <code>STORAGE_PATH</code> directory. Metadata is persisted as <code>_meta.json</code>.</p>
+        </div>
+        <div class="settings-group">
+          <h3>Coming Soon</h3>
+          <ul>
+            <li>n8n workflow integration</li>
+            <li>Secrets manager link</li>
+            <li>Container status panel</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Preview Modal -->
+  <div id="preview-modal" class="modal" role="dialog" aria-modal="true" aria-label="File preview" style="display:none">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-box">
+      <div class="modal-header">
+        <span id="preview-title" class="modal-title"></span>
+        <button id="preview-close" class="btn btn-icon" aria-label="Close preview">✕</button>
+      </div>
+      <div id="preview-content" class="preview-content"></div>
+    </div>
+  </div>
+
+  <script src="/vendor/highlight.min.js"></script>
+  <link rel="stylesheet" href="/vendor/highlight-dark.min.css" />
+  <script src="/vendor/marked.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
