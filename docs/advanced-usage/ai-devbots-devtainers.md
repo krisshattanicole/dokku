@@ -27,6 +27,17 @@ For simple multi-repository management:
 
 This supports server apps, webapps, static sites, snippet services, and wasm-backed tools.
 
+### Organization-Scale Repository Intake
+
+For large organizations (for example, a catalog like `get-convex` with many component/app/template repositories), keep onboarding simple with a standard intake loop:
+
+1. Periodically pull repository metadata via API.
+2. Classify repos by runtime/toolchain (TypeScript, Rust, Python, mobile, infra).
+3. Map each class to a reusable DevTainer base image.
+4. Auto-provision/update Dokku apps and worker queues per repository.
+
+This allows one platform to continuously absorb new repositories without custom per-repo infrastructure work.
+
 ## DevBot/DevTainer Baseline
 
 For each bot/container:
