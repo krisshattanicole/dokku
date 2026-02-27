@@ -1,0 +1,39 @@
+{
+  "name": "artifact-gallery",
+  "description": "DevBots Artifact Gallery — bulk upload, preview, and manage multi-format files",
+  "keywords": ["devbots", "dokku", "artifact", "gallery", "dashboard"],
+  "env": {
+    "PORT": {
+      "description": "Port for the web server",
+      "value": "5000"
+    },
+    "UPLOAD_MAX_SIZE": {
+      "description": "Maximum upload size (e.g. 50mb)",
+      "value": "50mb"
+    },
+    "GALLERY_TITLE": {
+      "description": "Display title for the gallery dashboard",
+      "value": "DevBots Artifact Gallery"
+    },
+    "STORAGE_PATH": {
+      "description": "Path to store uploaded artifacts",
+      "value": "./uploads"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "healthchecks": {
+    "web": [
+      {
+        "type": "startup",
+        "name": "web check",
+        "description": "Check that the web process is up",
+        "path": "/",
+        "attempts": 3
+      }
+    ]
+  }
+}
