@@ -99,6 +99,7 @@ This documentation covers the installation, configuration, and usage of Dokku - 
 - [Deployment Tasks](advanced-usage/deployment-tasks.md) - Pre/post deploy hooks
 - [Event Logs](advanced-usage/event-logs.md) - Dokku event history
 - [Backup and Recovery](advanced-usage/backup-recovery.md) - Data backup strategies
+- [Personal AI Agent DevBots and DevTainers](advanced-usage/ai-devbots-devtainers.md) - Blueprint for multi-agent self-hosted automation
 
 ## Development
 
