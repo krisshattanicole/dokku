@@ -35,3 +35,13 @@ Building containers with buildpacks currently results in a persistent `cache` di
 ```shell
 dokku repo:purge-cache node-js-app
 ```
+
+## Detaching a fork to make a repository private
+
+GitHub requires forks to stay public. To make a forked repository private, first detach it from the upstream:
+
+1. In **Settings → Danger Zone**, use **Leave fork network** (if available) to detach while retaining stars, issues, and pull requests.
+2. If the UI option is unavailable, submit the [GitHub fork detach request form](https://support.github.com/request/fork) and wait for the repository to be disconnected.
+3. As a last resort, mirror-push the fork to a new repository and delete the original fork—this severs the fork relationship but also drops issues and pull requests.
+
+After detaching, change the repository visibility to **Private** in the repository settings.
